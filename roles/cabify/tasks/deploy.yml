@@ -4,9 +4,8 @@
     src: cabify.nomad.j2
     dest: "{{ nomad_jobs_dir }}/cabify.nomad"
     mode: 0644
-  notify: deploy cabify application
-  register: cabify_manifest_changed
+  register: cabify_manifest
 
 - name: Deploy Cabify
   command: nomad run {{ nomad_jobs_dir }}/cabify.nomad
-  when: cabify_manifest_changed|success
+  when: cabify_manifest.changed or cabify_dockerfile.changed

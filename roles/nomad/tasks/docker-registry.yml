@@ -6,14 +6,17 @@
     owner: root
     group: root
     mode: 0644
-  register: docker_registry_manifest_changed
+  register: docker_registry_manifest
 
-- name: Deploy the Docker registry
-  command: nomad run {{ nomad_jobs_dir }}/docker-registry.nomad
-  when: docker_registry_manifest_changed|success
+- block:
+  - name: Deploy the Docker registry
+    command: nomad run {{ nomad_jobs_dir }}/docker-registry.nomad
 
-- name: Wait the Docker registry to become available
-  wait_for:
-    host: localhost
-    port: 5000
-    timeout: 30
+  - name: Wait the Docker registry to become available
+    wait_for:
+      host: localhost
+      port: 5000
+      timeout: 30
+      
+  when: docker_registry_manifest.changed
+  

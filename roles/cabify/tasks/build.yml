@@ -15,7 +15,7 @@
   with_items:
     - cabify.py
     - Dockerfile
-  register: cabify_dockerfile_changed
+  register: cabify_dockerfile
 
 - name: Build a Docker image for the Cabify service
   docker_image:
@@ -23,5 +23,4 @@
     name: localhost:5000/cabify
     tag: "{{ cabify_build_version }}"
     push: yes
-  when: cabify_dockerfile_changed|success
-  notify: deploy cabify application
+  when: cabify_dockerfile.changed
