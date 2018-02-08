@@ -47,7 +47,7 @@ HAProxy is also a SPOF being a single instance. Ideally we should run many insta
 
 ## Improvements
 
-Aside from the obvious architectural improvements in regards of high availability, load balancing, disaster recovery and so on, I would hook this up to the SCM repository where the application is being developed. By using webhooks and some CI tooling I would create a continuous delivery/deployment solution that will automatically create multiple environments based on branches, including the produciton one.
+Aside from the obvious architectural improvements in regards of high availability, load balancing, disaster recovery and so on, I would hook this up to the SCM repository where the application is being developed. By using webhooks and some CI tooling I would create a continuous delivery/deployment solution that will automatically create multiple environments based on branches, including the production one.
 
 Also, there is no monitoring whatsoever and there are many moving parts that can fail.
 
