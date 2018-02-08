@@ -1,3 +1,8 @@
 ---
 cabify_bottle_version: 0.12.13
-cabify_path: /opt/cabify
+cabify_build_version: 0.0.2
+cabify_deploy_version: 0.0.1
+cabify_build_directory: /var/opt/dockerfiles/cabify
+cabify_nomad_replicas: 7
+cabify_nomad_datacenter: cabify
+nomad_jobs_dir: /etc/nomad.d/jobs

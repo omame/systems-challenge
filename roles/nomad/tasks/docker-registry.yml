@@ -1,0 +1,10 @@
+---
+- name: Deploy Docker Registry
+  template:
+    src: docker-registry.nomad.j2
+    dest: "{{ nomad_jobs_dir }}/docker-registry.nomad"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - deploy docker registry

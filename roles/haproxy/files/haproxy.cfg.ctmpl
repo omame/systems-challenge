@@ -1,4 +1,3 @@
-# {{ ansible_managed }}
 global
         log /dev/log local0
         log /dev/log local1 notice
@@ -26,11 +25,12 @@ defaults
         errorfile 504 /etc/haproxy/errors/504.http
 
 frontend cabify
-  bind :{{ haproxy_frontend_port }}
+  bind :8080
   maxconn 10000
   option httplog
   default_backend cabify
 
 backend cabify
-   mode http
-   server cabify-server localhost:8181
+  mode http
+  {{range service "cabify"}}
+  server {{.ID}} {{.Address}}:{{.Port}}{{end}}

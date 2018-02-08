@@ -1,0 +1,27 @@
+---
+- name: Create the build directory
+  file:
+    path: "{{ cabify_build_directory }}"
+    state: directory
+    owner: root
+    group: root
+
+- name: Install the Cabify files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ cabify_build_directory }}"
+    owner: root
+    group: root
+  with_items:
+    - cabify.py
+    - Dockerfile
+  register: cabify_dockerfile_changed
+
+- name: Build a Docker image for the Cabify service
+  docker_image:
+    path: "{{ cabify_build_directory }}"
+    name: localhost:5000/cabify
+    tag: "{{ cabify_build_version }}"
+    push: yes
+  when: cabify_dockerfile_changed|success
+  notify: deploy cabify application

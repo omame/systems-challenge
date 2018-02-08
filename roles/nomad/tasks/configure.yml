@@ -1,0 +1,10 @@
+---
+- name: Copy Nomad agent config
+  template:
+    src: nomad_agent.hcl.j2
+    dest: "{{ nomad_config_dir }}/20-agent.hcl"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart nomad

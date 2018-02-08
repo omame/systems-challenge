@@ -1,0 +1,31 @@
+---
+- name: Add apt-key for the Docker repository
+  apt_key:
+    id: 0EBFCD88
+    state: present
+    keyserver: https://download.docker.com/linux/ubuntu/gpg
+
+- name: Add apt-key for the Docker repository
+  apt_repository:
+    repo: "{{ docker_engine_repository }}"
+    state: present
+    update_cache: yes
+
+- name: Install docker
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - docker-ce
+    - linux-image-extra-{{ ansible_kernel }}
+    - linux-image-extra-virtual
+
+- name: Start Docker Engine
+  service:
+    name: docker
+    state: started
+
+- name: Install docker-py with PIP
+  pip:
+    name: docker-py
+    state: present

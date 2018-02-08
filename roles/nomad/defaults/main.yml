@@ -1,0 +1,15 @@
+---
+nomad_version: 0.7.1
+nomad_download_url: "https://releases.hashicorp.com/nomad/{{ nomad_version }}/nomad_{{ nomad_version }}_linux_amd64.zip"
+
+nomad_datacenter: cabify
+# This should be stored in a vault
+nomad_encrypt: LXh8fOYb88piyG1w4apSHA==
+
+nomad_config_dir: /etc/nomad.d
+nomad_data_dir: /var/lib/nomad
+nomad_install_dir: /opt/nomad/bin
+nomad_log_dir: /var/log/nomad
+nomad_jobs_dir: "{{ nomad_config_dir }}/jobs"
+
+nomad_binary: "{{ nomad_install_dir }}/nomad"

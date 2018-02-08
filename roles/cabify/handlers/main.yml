@@ -3,3 +3,6 @@
     name: cabify
     enabled: yes
     state: restarted
+
+- name: deploy cabify application
+  command: nomad run {{ nomad_jobs_dir }}/cabify.nomad

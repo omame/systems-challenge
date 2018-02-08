@@ -1,10 +1,4 @@
 ---
-
-- name: Install required tools by Consul
-  apt: name={{ item }}
-  with_items:
-    - unzip
-
 - name: Create directory structure for Consul
   file:
     name: "{{ item }}"
@@ -26,6 +20,12 @@
     mode: 0755
     creates: "{{ consul_install_dir }}/consul"
 
+- name: Create an alternative for Consul
+  alternatives:
+    name: consul
+    link: /usr/local/bin/consul
+    path: "{{ consul_install_dir }}/consul"
+    
 - name: Create Upstart config for Consul
   template:
     src: upstart/consul.conf.j2

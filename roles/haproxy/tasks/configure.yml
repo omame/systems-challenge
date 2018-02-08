@@ -1,8 +1,21 @@
 --- 
 
-- name: Generate HAProxy configuration 
-  template:
-    src: haproxy/haproxy.cfg.j2
-    dest: /etc/haproxy/haproxy.cfg
+- name: Install the HAProxy configuration template
+  copy:
+    src: haproxy.cfg.ctmpl
+    dest: /etc/consul-template.d/templates/haproxy.ctmpl
+    owner: root
+    group: root
+    mode: 0644
   notify:
-    - reload haproxy
+    - restart consul-template
+  
+- name: Install the HAProxy service for consul-template
+  copy:
+    src: haproxy-consul-template.hcl
+    dest: /etc/consul-template.d/services/haproxy.hcl
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart consul-template

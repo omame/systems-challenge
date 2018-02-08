@@ -1,0 +1,7 @@
+---
+- name: Create the Nomad manifest
+  template:
+    src: cabify.nomad.j2
+    dest: "{{ nomad_jobs_dir }}/cabify.nomad"
+    mode: 0644
+  notify: deploy cabify application

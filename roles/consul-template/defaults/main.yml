@@ -1,0 +1,11 @@
+---
+consul_template_version: 0.19.4
+consul_template_download_url: "https://releases.hashicorp.com/consul-template/{{ consul_template_version }}/consul-template_{{ consul_template_version }}_linux_amd64.zip"
+
+consul_template_config_dir: /etc/consul-template.d
+consul_template_templates_dir: "{{ consul_template_config_dir }}/templates"
+consul_template_services_dir: "{{ consul_template_config_dir }}/services"
+consul_template_install_dir: /opt/consul-template/bin
+consul_template_log_dir: /var/log/consul-template
+
+consul_template_binary: "{{ consul_template_install_dir }}/consul-template"

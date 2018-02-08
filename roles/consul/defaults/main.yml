@@ -3,6 +3,7 @@ consul_version: 1.0.3
 consul_download_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip"
 
 consul_datacenter: cabify
+# This should be stored in a vault
 consul_encrypt: WNFe5zIjCIHFeJnqtrfdgw==
 
 consul_config_dir: /etc/consul.d

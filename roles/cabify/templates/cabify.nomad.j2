@@ -1,0 +1,56 @@
+job "cabify" {
+  datacenters = ["{{ cabify_nomad_datacenter }}"]
+  type        = "service"
+
+  # Rolling updates should be sequential
+  update {
+    stagger      = "10s"
+    max_parallel = 1
+  }
+
+  group "cabify" {
+    count = {{ cabify_nomad_replicas }}
+
+    task "cabify" {
+      driver = "docker"
+
+      config {
+        image = "localhost:5000/cabify:{{ cabify_deploy_version }}"
+        ssl   = false
+
+        port_map {
+          cabify = 8181
+        }
+      }
+
+      service {
+        name = "cabify"
+
+        tags = [
+          "version:{{ cabify_deploy_version }}",
+        ]
+
+        port = "cabify"
+
+        check {
+          name = "Cabify healthcheck"
+          type = "http"
+          port = "cabify"
+          path = "/status"
+
+          interval = "10s"
+          timeout  = "2s"
+        }
+      }
+
+      resources {
+        cpu    = 100
+        memory = 32
+
+        network {
+          port "cabify" {}
+        }
+      }
+    }
+  }
+}

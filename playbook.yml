@@ -2,6 +2,10 @@
 - hosts: default
   become: yes
   roles:
-    - cabify
+    - base
+    - docker-engine
     - consul
+    - consul-template
+    - nomad
+    - cabify
     - haproxy

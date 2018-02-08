@@ -1,5 +1,2 @@
 ---
 haproxy_release: 1.8
-
-# HAProxy frontend port to be exposed. Note that the Vagrantfile depends on this
-haproxy_frontend_port: 8080

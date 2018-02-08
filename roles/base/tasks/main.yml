@@ -1,0 +1,13 @@
+---
+- name: Install some useful packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg-curl
+    - python-pip
+    - software-properties-common
+    - unzip

@@ -1,0 +1,36 @@
+---
+- name: Create directory structure for Consul-template
+  file:
+    name: "{{ item }}"
+    owner: root
+    group: root
+    state: directory
+    recurse: yes
+  with_items:
+    - "{{ consul_template_config_dir }}"
+    - "{{ consul_template_install_dir }}"
+    - "{{ consul_template_log_dir }}"
+    - "{{ consul_template_templates_dir }}"
+    - "{{ consul_template_services_dir }}"
+
+- name: Install Consul-template
+  unarchive:
+    src: "{{ consul_template_download_url }}"
+    dest: "{{ consul_template_install_dir }}"
+    remote_src: True
+    mode: 0755
+    creates: "{{ consul_template_install_dir }}/consul-template"
+
+- name: Create an alternative for Consul-template
+  alternatives:
+    name: consul-template
+    link: /usr/local/bin/consul-template
+    path: "{{ consul_template_binary }}"
+    
+- name: Create Upstart config for Consul-template
+  template:
+    src: upstart.j2
+    dest: /etc/init/consul-template.conf
+    mode: 0644
+  notify:
+    - restart consul-template

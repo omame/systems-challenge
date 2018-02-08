@@ -1,0 +1,58 @@
+job "docker-registry" {
+    datacenters = ["{{ nomad_datacenter }}"]
+	type = "service"
+	priority = 30
+
+	update {
+		stagger = "10s"
+		max_parallel = 1
+	}
+
+	group "docker-registry" {
+		count = 1
+
+		restart {
+			attempts = 10
+			interval = "5m"
+			delay = "10s"
+			mode = "delay"
+		}
+
+  	task "docker-registry" {
+      driver = "docker"
+      config {
+        image = "registry:2"
+        port_map {
+          api = 5000
+        }
+      }
+
+      service {
+        name = "docker-registry"
+        port = "api"
+        check {
+          name = "alive"
+          type = "tcp"
+          interval = "10s"
+          timeout = "2s"
+        }
+      }
+
+      resources {
+        cpu = 100
+        memory = 100
+        network {
+          mbits = 1
+          port "api" { static = 5000 }
+        }
+      }
+
+      logs {
+        max_files = 10
+        max_file_size = 15
+      }
+
+      kill_timeout = "10s"
+    }
+  }
+}

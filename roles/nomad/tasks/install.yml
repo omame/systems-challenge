@@ -1,0 +1,36 @@
+---
+- name: Create directory structure for Nomad
+  file:
+    name: "{{ item }}"
+    owner: root
+    group: root
+    state: directory
+    recurse: yes
+  with_items:
+    - "{{ nomad_config_dir }}"
+    - "{{ nomad_data_dir }}"
+    - "{{ nomad_install_dir }}"
+    - "{{ nomad_log_dir }}"
+    - "{{ nomad_jobs_dir }}"
+
+- name: Install Nomad
+  unarchive:
+    src: "{{ nomad_download_url }}"
+    dest: "{{ nomad_install_dir }}"
+    remote_src: True
+    mode: 0755
+    creates: "{{ nomad_install_dir }}/nomad"
+
+- name: Create an alternative for Nomad
+  alternatives:
+    name: nomad
+    link: /usr/local/bin/nomad
+    path: "{{ nomad_install_dir }}/nomad"
+    
+- name: Create Upstart config for Nomad
+  template:
+    src: upstart/nomad.conf.j2
+    dest: /etc/init/nomad.conf
+    mode: 0644
+  notify:
+    - restart nomad

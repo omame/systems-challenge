@@ -1,0 +1,9 @@
+description "Consul Template"
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [06]
+
+exec {{ consul_template_binary }} -config={{ consul_template_services_dir }} >> {{ consul_template_log_dir }}/consul-template.log 2>&1
+
+respawn
+respawn limit 10 10
+kill timeout 10
