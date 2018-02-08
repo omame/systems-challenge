@@ -3,3 +3,10 @@
   service:
     name: nomad
     state: restarted
+  notify: wait for nomad to become available
+
+- name: wait for nomad to become available
+  wait_for:
+    host: localhost
+    port: 4646
+    timeout: 30

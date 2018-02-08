@@ -4,3 +4,9 @@
     name: nomad
     enabled: yes
     state: started
+
+- name: Wait Nomad to become available
+  wait_for:
+    host: localhost
+    port: 4646
+    timeout: 30
