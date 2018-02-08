@@ -3,6 +3,3 @@
   service:
     name: nomad
     state: restarted
-
-- name: deploy docker registry
-  command: nomad run {{ nomad_jobs_dir }}/docker-registry.nomad

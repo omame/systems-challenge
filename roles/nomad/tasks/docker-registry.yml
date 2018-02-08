@@ -1,10 +1,19 @@
 ---
-- name: Deploy Docker Registry
+- name: Configure the Docker registry
   template:
     src: docker-registry.nomad.j2
     dest: "{{ nomad_jobs_dir }}/docker-registry.nomad"
     owner: root
     group: root
     mode: 0644
-  notify:
-    - deploy docker registry
+  register: docker_registry_manifest_changed
+
+- name: Deploy the Docker registry
+  command: nomad run {{ nomad_jobs_dir }}/docker-registry.nomad
+  when: docker_registry_manifest_changed|success
+
+- name: Wait the Docker registry to come online
+  wait_for:
+    host: localhost
+    port: 5000
+    timeout: 30
